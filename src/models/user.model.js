@@ -5,43 +5,43 @@ import bcrypt from "bcrypt";
 const userSchema = new Schema(
   {
     username: {
-      type: string,
+      type: String,
       required: true,
       unique: true,
       lowercase: true,
-      trim: trim,
+      trim: true,
       index: true,
     },
     email: {
-      type: string,
+      type: String,
       required: true,
       unique: true,
       lowercase: true,
-      trim: trim,
+      trim: true,
     },
-    fullName: {
-      type: string,
+    fullname: {
+      type: String,
       required: true,
-      trim: trim,
+      trim: true,
       index: true,
     },
     avatar: {
-      type: string,
+      type: String,
       required: true,
     },
     coverImage: {
-      type: string,
+      type: String,
     },
     watchHistory: {
-      type: Schema.Types.objectId,
+      type: Schema.Types.ObjectId,
       ref: "Video",
     },
     password: {
-      type: string,
+      type: String,
       required: [true, "Password is required"],
     },
     refreshToken: {
-      type: string,
+      type: String,
     },
   },
   {
@@ -51,8 +51,8 @@ const userSchema = new Schema(
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
-  this.password = bcrypt.hash(this.password, 10);
-  next();
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
